@@ -49,6 +49,12 @@ class AlarmScheduler(private val context: Context) : ReminderScheduling {
         alarmManager.cancel(pendingIntent(noteId))
     }
 
+    override fun dismissNotification(noteId: Long) {
+        val nm = context.getSystemService(Context.NOTIFICATION_SERVICE)
+            as android.app.NotificationManager
+        nm.cancel(noteId.toInt())
+    }
+
     fun canScheduleExact(): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             alarmManager.canScheduleExactAlarms()

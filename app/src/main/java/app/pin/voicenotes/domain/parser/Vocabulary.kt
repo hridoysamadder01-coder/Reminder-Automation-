@@ -52,6 +52,20 @@ object Vocabulary {
             "rat"
         )
 
+        // ---- Number words (spoken hours: "দশটায়", "dosh tay") --------------
+        put(listOf("ek", "এক"), "1")
+        put(listOf("dui", "দুই"), "2")
+        put(listOf("tin", "তিন"), "3")
+        put(listOf("char", "chaar", "চার"), "4")
+        put(listOf("pach", "panch", "paach", "পাঁচ"), "5")
+        put(listOf("choy", "chhoy", "soy", "ছয়"), "6")
+        put(listOf("sat", "shat", "saat", "সাত"), "7")
+        put(listOf("aat", "আট"), "8") // Latin "at" stays the English preposition
+        put(listOf("noy", "নয়"), "9")
+        put(listOf("dosh", "dos", "দশ"), "10")
+        put(listOf("egaro", "egaro", "এগারো", "এগার"), "11")
+        put(listOf("baro", "বারো", "বার"), "12")
+
         // ---- Time words ----------------------------------------------------
         // Digit-attached suffixes ("১০টায়", "10tay") are split off before
         // tokenization, so these arrive as standalone tokens.

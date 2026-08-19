@@ -37,6 +37,7 @@ object AppViewModelProvider {
                 savedStateHandle = createSavedStateHandle(),
                 repository = app.container.repository,
                 alarmScheduler = app.container.scheduler,
+                appScope = app.container.appScope,
             )
         }
     }

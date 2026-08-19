@@ -1,5 +1,9 @@
 package app.pin.voicenotes.ui.detail
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,11 +43,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.pin.voicenotes.R
+import app.pin.voicenotes.reminder.NotificationHelper
 import app.pin.voicenotes.ui.AppViewModelProvider
 import app.pin.voicenotes.ui.TimeFormat
 import app.pin.voicenotes.ui.components.ReminderPickerDialog
@@ -61,10 +67,32 @@ fun NoteDetailScreen(
 ) {
     val note by viewModel.note.collectAsState()
     val haptics = LocalHapticFeedback.current
+    val context = LocalContext.current
 
     var editing by rememberSaveable { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var showReminderPicker by remember { mutableStateOf(false) }
+
+    // Setting a reminder here must ask for notification permission the same
+    // way the voice flow does — this may be the user's first reminder ever.
+    var pendingReminderAt by remember { mutableStateOf<LocalDateTime?>(null) }
+    val notifPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        pendingReminderAt?.let { viewModel.setReminder(it) }
+        pendingReminderAt = null
+        if (!granted) {
+            onShowSnackbar(context.getString(R.string.notifications_off_warning), null, null)
+        }
+    }
+    val setReminderWithPermission: (LocalDateTime) -> Unit = { at ->
+        if (Build.VERSION.SDK_INT >= 33 && !NotificationHelper.canPostNotifications(context)) {
+            pendingReminderAt = at
+            notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.setReminder(at)
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -73,6 +101,18 @@ fun NoteDetailScreen(
                 is DetailEvent.Snackbar ->
                     onShowSnackbar(event.message, event.actionLabel, event.action)
             }
+        }
+    }
+
+    // A stale deep link (deleted note) must not strand the user on a blank
+    // screen. Deleting from this screen pops via the Deleted event instead.
+    var everLoaded by remember { mutableStateOf(false) }
+    LaunchedEffect(note) {
+        if (note != null) {
+            everLoaded = true
+        } else if (!everLoaded) {
+            kotlinx.coroutines.delay(250)
+            if (viewModel.note.value == null) onBack()
         }
     }
 
@@ -278,7 +318,7 @@ fun NoteDetailScreen(
             initial = current.reminderAt?.let { TimeFormat.local(it) }
                 ?: LocalDateTime.now().plusHours(1).withMinute(0),
             onConfirm = {
-                viewModel.setReminder(it.ensureFuture())
+                setReminderWithPermission(it.ensureFuture())
                 showReminderPicker = false
             },
             onDismiss = { showReminderPicker = false },

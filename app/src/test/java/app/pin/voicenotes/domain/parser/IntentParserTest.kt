@@ -303,6 +303,47 @@ class IntentParserTest {
     }
 
     @Test
+    fun `late night small hours cross midnight`() {
+        val intent = parser.parse("aj rat 4 tay flight ase mone korais")
+        val reminder = intent as VoiceIntent.CreateNoteWithReminder
+        // "রাত ৪টা" is the small hours after tonight -> 4 AM tomorrow.
+        assertEquals(LocalDateTime.of(today.plusDays(1), java.time.LocalTime.of(4, 0)), reminder.remindAt)
+    }
+
+    @Test
+    fun `bengali spoken number word hour`() {
+        val intent = parser.parse("কাল সকাল দশটায় মনে করাইস ওষুধ খেতে হবে")
+        val reminder = intent as VoiceIntent.CreateNoteWithReminder
+        assertEquals(LocalDateTime.of(today.plusDays(1), java.time.LocalTime.of(10, 0)), reminder.remindAt)
+    }
+
+    @Test
+    fun `banglish number word hour`() {
+        val intent = parser.parse("kal dosh tay mone korais")
+        val reminder = intent as VoiceIntent.CreateNoteWithReminder
+        assertEquals(LocalDateTime.of(today.plusDays(1), java.time.LocalTime.of(10, 0)), reminder.remindAt)
+    }
+
+    @Test
+    fun `reminder set koro leaves no verb residue`() {
+        val intent = parser.parse("kal 9 tay meeting er reminder set koro")
+        val reminder = intent as VoiceIntent.CreateNoteWithReminder
+        assertEquals(LocalDateTime.of(today.plusDays(1), java.time.LocalTime.of(9, 0)), reminder.remindAt)
+        assertFalse(reminder.content.contains("set"))
+        assertFalse(reminder.content.contains("koro"))
+        assertTrue(reminder.content.contains("meeting"))
+    }
+
+    @Test
+    fun `english set a reminder phrasing`() {
+        val intent = parser.parse("set a reminder for tomorrow at 9 am call krishna")
+        val reminder = intent as VoiceIntent.CreateNoteWithReminder
+        assertEquals(LocalDateTime.of(today.plusDays(1), java.time.LocalTime.of(9, 0)), reminder.remindAt)
+        assertTrue(reminder.content.contains("call"))
+        assertFalse(reminder.content.contains("at 9"))
+    }
+
+    @Test
     fun `note keeps its time words when no reminder asked`() {
         val intent = parser.parse("kal 10 tay meeting ase likhe rakh")
         val note = intent as VoiceIntent.CreateNote

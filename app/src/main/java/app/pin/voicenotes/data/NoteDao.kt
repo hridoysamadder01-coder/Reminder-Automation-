@@ -56,9 +56,11 @@ interface NoteDao {
     @Query("SELECT * FROM notes WHERE createdAt BETWEEN :from AND :until ORDER BY createdAt DESC")
     fun observeCreatedBetween(from: Long, until: Long): Flow<List<NoteEntity>>
 
+    // Includes disabled-but-future reminders so the on/off switch is two-way:
+    // a toggled-off reminder stays visible and can be re-enabled.
     @Query(
-        "SELECT * FROM notes WHERE reminderEnabled = 1 AND reminderAt IS NOT NULL " +
-            "AND reminderAt > :now ORDER BY reminderAt ASC"
+        "SELECT * FROM notes WHERE reminderAt IS NOT NULL " +
+            "AND reminderAt > :now AND reminderStatus != 'NONE' ORDER BY reminderAt ASC"
     )
     fun observeUpcomingReminders(now: Long): Flow<List<NoteEntity>>
 

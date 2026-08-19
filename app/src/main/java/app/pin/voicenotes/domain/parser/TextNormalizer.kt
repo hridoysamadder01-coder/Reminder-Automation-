@@ -38,6 +38,12 @@ object TextNormalizer {
     // Split digit-runs from attached words: "১০টায়" -> "১০ টায়", "9pm" -> "9 pm".
     private val DIGIT_THEN_LETTER = Regex("([0-9০-৯])([\\p{L}])")
 
+    // Spoken Bengali hours fuse the number word with the classifier:
+    // "দশটায়" -> "দশ টায়" so the number word and time suffix parse separately.
+    private val BENGALI_NUMBER_WORD_TIME = Regex(
+        "(এক|দুই|তিন|চার|পাঁচ|ছয়|সাত|আট|নয়|দশ|এগারো|এগার|বারো|বার)(টায়|টায|টার|টা)"
+    )
+
     // Split script boundaries inside one token: "noteটা" -> "note টা".
     private val LATIN_THEN_BENGALI = Regex("([a-zA-Z])([\\u0980-\\u09FF])")
     private val BENGALI_THEN_LATIN = Regex("([\\u0980-\\u09FF])([a-zA-Z])")
@@ -51,6 +57,7 @@ object TextNormalizer {
         text = DOTTED_TIME.replace(text) { m -> "${m.groupValues[1]}:${m.groupValues[2]}" }
         text = PUNCTUATION.replace(text, " ")
         text = DIGIT_THEN_LETTER.replace(text) { m -> "${m.groupValues[1]} ${m.groupValues[2]}" }
+        text = BENGALI_NUMBER_WORD_TIME.replace(text) { m -> "${m.groupValues[1]} ${m.groupValues[2]}" }
         text = LATIN_THEN_BENGALI.replace(text) { m -> "${m.groupValues[1]} ${m.groupValues[2]}" }
         text = BENGALI_THEN_LATIN.replace(text) { m -> "${m.groupValues[1]} ${m.groupValues[2]}" }
 

@@ -13,6 +13,10 @@ import app.pin.voicenotes.domain.parser.IntentParser
 import app.pin.voicenotes.reminder.AlarmScheduler
 import app.pin.voicenotes.speech.AndroidSpeechController
 import app.pin.voicenotes.speech.SpeechController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
  * Plain manual wiring — the app is small enough that a DI framework would be
@@ -24,6 +28,12 @@ class AppContainer(private val app: Application) {
     val repository: NoteRepository by lazy { NoteRepository(database.noteDao(), scheduler) }
     val intentParser: IntentParser by lazy { IntentParser() }
     val speech: SpeechController by lazy { AndroidSpeechController(app) }
+
+    /**
+     * Process-lifetime scope for work that must outlive a screen — e.g. the
+     * Undo action of a deleted note after its ViewModel is already cleared.
+     */
+    val appScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 }
 
 class PinApp : Application() {
@@ -34,5 +44,9 @@ class PinApp : Application() {
     override fun onCreate() {
         super.onCreate()
         container = AppContainer(this)
+        // Alarms can be lost without a reboot too (force-stop, exact-alarm
+        // permission toggling). Opportunistically re-arm on every app start;
+        // scheduling is idempotent per note.
+        container.appScope.launch { container.repository.restoreReminders() }
     }
 }

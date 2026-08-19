@@ -27,6 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,12 +55,18 @@ fun NotesScreen(
     val query by viewModel.query.collectAsState()
     val filter by viewModel.filter.collectAsState()
 
-    LaunchedEffect(initialQuery, initialFilter) {
-        initialQuery?.takeIf { it.isNotBlank() }?.let { viewModel.setQuery(it) }
-        when (initialFilter) {
-            "pinned" -> viewModel.setFilter(NotesFilter.PINNED)
-            "today" -> viewModel.setFilter(NotesFilter.TODAY)
-            "reminders" -> viewModel.setFilter(NotesFilter.REMINDERS)
+    // Apply navigation arguments exactly once per entry — returning from a
+    // note must not clobber a filter or query the user changed since.
+    var navArgsApplied by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (!navArgsApplied) {
+            navArgsApplied = true
+            initialQuery?.takeIf { it.isNotBlank() }?.let { viewModel.setQuery(it) }
+            when (initialFilter) {
+                "pinned" -> viewModel.setFilter(NotesFilter.PINNED)
+                "today" -> viewModel.setFilter(NotesFilter.TODAY)
+                "reminders" -> viewModel.setFilter(NotesFilter.REMINDERS)
+            }
         }
     }
 

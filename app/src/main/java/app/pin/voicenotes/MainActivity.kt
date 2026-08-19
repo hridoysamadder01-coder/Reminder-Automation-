@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.mutableStateOf
@@ -26,8 +27,16 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        consumeOpenIntent(intent)
+        // The app is dark-only: force light system-bar icons regardless of
+        // the device theme, instead of edge-to-edge's auto detection.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
+        )
+        // Only a fresh launch may carry a notification deep link; on
+        // recreation (rotation etc.) the same launch intent is redelivered
+        // and must not yank the user back to the note.
+        if (savedInstanceState == null) consumeOpenIntent(intent)
         setContent {
             PinTheme {
                 PinRoot(
@@ -40,6 +49,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        setIntent(intent)
         consumeOpenIntent(intent)
     }
 

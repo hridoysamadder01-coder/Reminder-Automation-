@@ -33,8 +33,12 @@ class NotesViewModel(private val repository: NoteRepository) : ViewModel() {
     val query = MutableStateFlow("")
     val filter = MutableStateFlow(NotesFilter.ALL)
 
-    private val searchResults = query
-        .debounce(150)
+    // Re-runs the search whenever notes change too, so pin toggles and
+    // deletes reflect immediately inside live search results.
+    private val searchResults = combine(
+        query.debounce(150),
+        repository.observeAll(),
+    ) { q, _ -> q }
         .flatMapLatest { q -> flow { emit(if (q.isBlank()) null else repository.search(q)) } }
 
     val state: StateFlow<NotesUiState> = combine(

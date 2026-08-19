@@ -124,6 +124,7 @@ class DateTimeParser(private val clock: Clock = Clock.systemDefaultZone()) {
                     minute = m
                     explicit24 = h > 12 || h == 0
                     consumed += i
+                    if (i > 0 && tokens[i - 1] == "at") consumed += i - 1
                     consumeSuffixes(tokens, i, consumed)?.let { meridiem = it }
                     break
                 }
@@ -135,6 +136,9 @@ class DateTimeParser(private val clock: Clock = Clock.systemDefaultZone()) {
                     hour = h
                     explicit24 = h > 12
                     consumed += i
+                    // "tomorrow at 9 am" — the dangling preposition belongs
+                    // to the time, not the note content.
+                    if (i > 0 && tokens[i - 1] == "at") consumed += i - 1
                     consumeSuffixes(tokens, i, consumed)?.let { meridiem = it }
                     break
                 }
@@ -213,8 +217,8 @@ class DateTimeParser(private val clock: Clock = Clock.systemDefaultZone()) {
                 (if (hour == 12) 12 else if (hour in 1..11) hour + 12 else hour) to 0
             DayPeriod.NIGHT -> when (hour) {
                 12 -> 0 to 1      // "rat 12 ta" -> midnight entering the next day
-                in 1..3 -> hour to 1  // "rat 2 ta" -> 2 AM after that night
-                else -> (hour + 12) to 0
+                in 1..5 -> hour to 1  // "rat 2/4 ta" -> small hours after that night
+                else -> (hour + 12) to 0  // "rat 8 ta" -> 20:00
             }
             null -> when (hour) {
                 // Bare hour ("kal 10 tay"): daytime reading. 7-11 -> morning,

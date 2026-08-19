@@ -1,11 +1,20 @@
 package app.pin.voicenotes.ui.detail
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * নোটের বিস্তারিত পাতার ViewModel। ডিলিট আর তার Undo চালানো হয় appScope-এ
+ * (viewModelScope-এ নয়) — কারণ ডিলিটের পর পাতা বন্ধ হয়ে ViewModel মরে যায়,
+ * তখন Undo চাপলে মরা scope-এ কিছুই চলত না, নোট ফেরত আসত না।
+ */
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.pin.voicenotes.data.NoteEntity
 import app.pin.voicenotes.data.NoteRepository
 import app.pin.voicenotes.reminder.AlarmScheduler
+import app.pin.voicenotes.ui.TimeFormat
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,6 +36,7 @@ class DetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val repository: NoteRepository,
     private val alarmScheduler: AlarmScheduler,
+    private val appScope: CoroutineScope,
 ) : ViewModel() {
 
     val noteId: Long = checkNotNull(savedStateHandle["noteId"])
@@ -68,12 +78,10 @@ class DetailViewModel(
                     message = "Reminder removed",
                     actionLabel = "Undo",
                     action = {
+                        // appScope: the user may undo after leaving this screen.
                         if (previousAt != null && previousAt > System.currentTimeMillis()) {
-                            viewModelScope.launch {
-                                repository.setReminder(
-                                    noteId,
-                                    app.pin.voicenotes.ui.TimeFormat.local(previousAt)
-                                )
+                            appScope.launch {
+                                repository.setReminder(noteId, TimeFormat.local(previousAt))
                             }
                         }
                     },
@@ -84,14 +92,17 @@ class DetailViewModel(
 
     fun deleteNote() {
         val snapshot = note.value ?: return
-        viewModelScope.launch {
+        // The whole delete + undo pair lives on appScope: the Deleted event
+        // pops this screen and clears the ViewModel, and the snackbar's Undo
+        // fires well after that.
+        appScope.launch {
             repository.deleteNote(noteId)
             _events.tryEmit(DetailEvent.Deleted)
             _events.tryEmit(
                 DetailEvent.Snackbar(
                     message = "Note deleted",
                     actionLabel = "Undo",
-                    action = { viewModelScope.launch { repository.restoreNote(snapshot) } },
+                    action = { appScope.launch { repository.restoreNote(snapshot) } },
                 )
             )
         }

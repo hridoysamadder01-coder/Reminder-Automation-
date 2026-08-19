@@ -33,7 +33,13 @@ class IntentParser(clock: Clock = Clock.systemDefaultZone()) {
     private val reminderCreatePhrases: List<List<Slot>> = listOf(
         listOf(s("mone"), s("korais")),
         listOf(s("mone"), s("koriye"), opt(*giveVerbs)),
-        listOf(s("reminder", "alarm"), opt("ta"), s(*giveVerbs, "kor", "rakh", "set", "korais")),
+        listOf(
+            s("reminder", "alarm"), opt("ta"),
+            s(*giveVerbs, "kor", "rakh", "set", "korais"),
+            opt("kora"), opt(*giveVerbs, "kor", "rakh"),
+        ),
+        listOf(s("set"), opt("a", "ekta"), s("reminder", "alarm"), opt(*giveVerbs, "kor")),
+        listOf(s("ekta", "a"), s("reminder", "alarm"), s(*giveVerbs, "kor", "set")),
         listOf(s("remind"), s("amake", "korais", "koriye", "kor", *giveVerbs)),
     )
 
@@ -76,7 +82,7 @@ class IntentParser(clock: Clock = Clock.systemDefaultZone()) {
 
     // Fillers glued to a command phrase ("eita likhe rakh", "ar amare mone korais").
     private val adjacentBefore = setOf("eita", "oita", "ta", "ti", "ar", "amake", "je", "to")
-    private val adjacentAfter = setOf("je", "to")
+    private val adjacentAfter = setOf("je", "to", "for", "at")
     private val leadingTrim = setOf("ar", "to", "je", "ei", "eita", "oita", "oi", "amar", "amake")
     private val trailingTrim = setOf("ar", "to", "je")
 

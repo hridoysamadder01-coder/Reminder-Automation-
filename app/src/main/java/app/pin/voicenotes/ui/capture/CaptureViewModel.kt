@@ -234,6 +234,9 @@ class CaptureViewModel(
 
     fun saveReminder() {
         val current = _ui.value as? CaptureUi.ConfirmReminder ?: return
+        // Double-tap guard: leaving ConfirmReminder synchronously means a
+        // second tap finds Processing and returns above.
+        _ui.value = CaptureUi.Processing
         val doSave = {
             viewModelScope.launch {
                 val note = repository.createNote(current.content, current.heard, current.remindAt)
@@ -293,6 +296,7 @@ class CaptureViewModel(
 
     fun clarifySaveWithoutReminder() {
         val current = _ui.value as? CaptureUi.Clarify ?: return
+        _ui.value = CaptureUi.Processing
         viewModelScope.launch {
             val note = repository.createNote(current.content, current.heard)
             _ui.value = CaptureUi.Hidden
@@ -389,6 +393,7 @@ class CaptureViewModel(
 
     fun confirmDelete() {
         val current = _ui.value as? CaptureUi.ConfirmDelete ?: return
+        _ui.value = CaptureUi.Processing
         viewModelScope.launch {
             val snapshot = current.note
             repository.deleteNote(snapshot.id)

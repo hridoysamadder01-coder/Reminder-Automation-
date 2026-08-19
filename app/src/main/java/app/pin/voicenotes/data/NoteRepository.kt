@@ -19,6 +19,9 @@ import java.time.ZoneId
 interface ReminderScheduling {
     fun schedule(noteId: Long, atEpochMillis: Long)
     fun cancel(noteId: Long)
+
+    /** Removes an already-posted notification for this note, if any. */
+    fun dismissNotification(noteId: Long) {}
 }
 
 class NoteRepository(
@@ -164,6 +167,9 @@ class NoteRepository(
     suspend fun deleteNote(id: Long) {
         val note = dao.getNote(id) ?: return
         scheduler.cancel(id)
+        // A fired reminder may still sit in the shade; a stale notification
+        // for a deleted note would open a blank screen.
+        scheduler.dismissNotification(id)
         dao.delete(note)
     }
 

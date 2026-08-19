@@ -30,7 +30,8 @@ object PinColors {
     val Outline = Color(0xFF262B33)
     val Ink = Color(0xFFF2EEE4)
     val InkFaint = Color(0xFFA8A69C)
-    val InkGhost = Color(0xFF6F6E67)
+    // Tertiary text still needs to clear WCAG AA (>4.5:1) on Background.
+    val InkGhost = Color(0xFF8D8B80)
     val Accent = Color(0xFFE8A33D)
     val AccentDeep = Color(0xFF6B4A15)
     val OnAccent = Color(0xFF1D1404)

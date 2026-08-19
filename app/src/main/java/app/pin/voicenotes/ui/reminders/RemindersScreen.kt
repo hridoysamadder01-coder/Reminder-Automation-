@@ -1,5 +1,9 @@
 package app.pin.voicenotes.ui.reminders
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,14 +25,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import app.pin.voicenotes.R
 import app.pin.voicenotes.data.NoteEntity
 import app.pin.voicenotes.data.ReminderStatus
+import app.pin.voicenotes.reminder.NotificationHelper
 import app.pin.voicenotes.ui.AppViewModelProvider
 import app.pin.voicenotes.ui.TimeFormat
 import app.pin.voicenotes.ui.components.EmptyState
@@ -43,6 +52,27 @@ fun RemindersScreen(
     viewModel: RemindersViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    // Re-enabling a reminder may be the user's first — ask for notification
+    // permission right here, mirroring the capture flow.
+    var pendingEnable by remember { mutableStateOf<NoteEntity?>(null) }
+    val notifPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { _ ->
+        pendingEnable?.let { viewModel.setEnabled(it, true) }
+        pendingEnable = null
+    }
+    val toggleWithPermission: (NoteEntity, Boolean) -> Unit = { note, enabled ->
+        if (enabled && Build.VERSION.SDK_INT >= 33 &&
+            !NotificationHelper.canPostNotifications(context)
+        ) {
+            pendingEnable = note
+            notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            viewModel.setEnabled(note, enabled)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -75,7 +105,7 @@ fun RemindersScreen(
                         ReminderRow(
                             note = note,
                             onClick = { onOpenNote(note.id) },
-                            onToggle = { enabled -> viewModel.setEnabled(note, enabled) },
+                            onToggle = { enabled -> toggleWithPermission(note, enabled) },
                         )
                     }
                     item { Spacer(Modifier.height(16.dp)) }
@@ -114,9 +144,9 @@ private fun ReminderRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            PinIcons.Bell,
+            imageVector = if (note.reminderEnabled) PinIcons.Bell else PinIcons.BellOff,
             contentDescription = null,
-            tint = PinColors.Accent,
+            tint = if (note.reminderEnabled) PinColors.Accent else PinColors.InkGhost,
             modifier = Modifier.size(18.dp),
         )
         Spacer(Modifier.width(14.dp))
@@ -124,13 +154,13 @@ private fun ReminderRow(
             Text(
                 text = note.title,
                 style = MaterialTheme.typography.titleMedium,
-                color = PinColors.Ink,
+                color = if (note.reminderEnabled) PinColors.Ink else PinColors.InkFaint,
             )
             Spacer(Modifier.height(2.dp))
             Text(
                 text = TimeFormat.reminderLabel(note.reminderAt ?: 0L),
                 style = MaterialTheme.typography.bodySmall,
-                color = PinColors.Accent,
+                color = if (note.reminderEnabled) PinColors.Accent else PinColors.InkGhost,
             )
         }
         Switch(

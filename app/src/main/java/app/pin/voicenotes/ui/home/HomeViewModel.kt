@@ -4,9 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.pin.voicenotes.data.NoteEntity
 import app.pin.voicenotes.data.NoteRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
@@ -18,10 +23,24 @@ data class HomeUiState(
     val isEmpty: Boolean = false,
 )
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel(repository: NoteRepository) : ViewModel() {
 
+    private fun clockTicks(): Flow<Long> = flow {
+        while (true) {
+            emit(System.currentTimeMillis())
+            delay(30_000)
+        }
+    }
+
+    // "Up next" must move on once a reminder fires, so "now" ticks along.
+    private val nextReminder = clockTicks().flatMapLatest { now ->
+        repository.observeUpcomingReminders(now)
+            .map { list -> list.firstOrNull { it.reminderEnabled } }
+    }
+
     val state: StateFlow<HomeUiState> = combine(
-        repository.observeUpcomingReminders().map { it.firstOrNull() },
+        nextReminder,
         repository.observePinnedCount(),
         repository.observePinned().map { it.take(3) },
         repository.observeRecent(5),
