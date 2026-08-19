@@ -108,7 +108,11 @@ class CaptureViewModel(
                 when (state) {
                     is SpeechState.Result -> {
                         speech.reset()
-                        handleTranscript(state.text)
+                        // A late result after the user dismissed the sheet must
+                        // not silently create a note.
+                        if (_ui.value is CaptureUi.Listening || _ui.value is CaptureUi.Processing) {
+                            handleTranscript(state.text)
+                        }
                     }
                     is SpeechState.Error -> {
                         if (_ui.value is CaptureUi.Listening || _ui.value is CaptureUi.Processing) {
