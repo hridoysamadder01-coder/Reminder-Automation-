@@ -1,5 +1,13 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * এটা অ্যাপের "শব্দভাণ্ডার" — বাংলা, বাংলিশ আর ইংরেজি সব বানানের রূপকে
+ * একটা canonical (আদর্শ) শব্দে আনে। যেমন: সকালে / shokale / sokal → "shokal",
+ * মনে করাইস / koris → "korais"। এরপর ইন্টেন্ট আর সময় শনাক্তকরণ শুধু
+ * canonical শব্দের ওপর চলে — তাই নতুন বানান যোগ করা মানে এখানে এক লাইন যোগ করা।
+ */
+
 /**
  * Maintainable normalization dictionary for the focused voice domain.
  *

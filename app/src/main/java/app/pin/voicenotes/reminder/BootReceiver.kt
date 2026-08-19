@@ -1,5 +1,12 @@
 package app.pin.voicenotes.reminder
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ফোন রিস্টার্ট হলে Android সব অ্যালার্ম মুছে দেয়, কিন্তু নোটগুলো Room-এ
+ * থেকে যায়। তাই বুট/অ্যাপ-আপডেট/ঘড়ি-বদলের পর এই রিসিভার ভবিষ্যতের
+ * রিমাইন্ডারগুলো আবার বসায়।
+ */
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent

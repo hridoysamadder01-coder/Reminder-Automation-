@@ -1,5 +1,14 @@
 package app.pin.voicenotes.reminder
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * AlarmManager দিয়ে রিমাইন্ডার বসানো/বাতিল। Android 12+-এ exact alarm
+ * পারমিশন ইউজার কেড়ে নিলে ~১০ মিনিটের window-এ fallback — রিমাইন্ডার
+ * হারায় না, শুধু সেকেন্ড-নিখুঁত থাকে না। প্রতিটা নোটের জন্য একটাই
+ * PendingIntent (requestCode = নোটের id) — তাই একই নোটে নতুন সময় দিলে
+ * পুরনো অ্যালার্ম নিজেই বদলে যায়, ডুপ্লিকেট বাজে না।
+ */
+
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context

@@ -1,5 +1,13 @@
 package app.pin.voicenotes.reminder
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * অ্যালার্ম বাজার মুহূর্তে এটা চলে: ডাটাবেস থেকে নোট পড়ে, নোটটা এখনো আছে
+ * আর রিমাইন্ডার চালু আছে কি না দেখে, তবেই নোটিফিকেশন দেখায় ও FIRED মার্ক করে।
+ * ডিলিট/বন্ধ করা রিমাইন্ডার চুপ থাকে। goAsync() দরকার কারণ ডাটাবেস পড়া
+ * ব্যাকগ্রাউন্ড থ্রেডে হয়।
+ */
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent

@@ -1,5 +1,13 @@
 package app.pin.voicenotes.ui.capture
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ক্যাপচারের bottom sheet — একটাই শিট, ভেতরে অবস্থাভেদে আলাদা পাতা:
+ * শোনা (আসল মাইক-লেভেলে নাচা বার + লাইভ ট্রান্সক্রিপ্ট), প্রসেসিং, টাইপিং,
+ * রিমাইন্ডার কনফার্ম (HEARD/NOTE/REMINDER + সময় বদলানো), "কয়টায়?" প্রশ্ন,
+ * নোট বাছাই, ডিলিট কনফার্ম, আর ভুল হলে সহজ ভাষায় বার্তা।
+ */
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

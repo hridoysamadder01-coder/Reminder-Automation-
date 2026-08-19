@@ -1,5 +1,11 @@
 package app.pin.voicenotes
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * অ্যাপের সব যন্ত্রাংশের এক জায়গায় জন্ম: ডাটাবেস, রিপোজিটরি, অ্যালার্ম,
+ * পার্সার, স্পিচ। DI ফ্রেমওয়ার্ক নেই — অ্যাপ ছোট, সরল হাতে-জোড়াই যথেষ্ট।
+ */
+
 import android.app.Application
 import app.pin.voicenotes.data.NoteRepository
 import app.pin.voicenotes.data.PinDatabase

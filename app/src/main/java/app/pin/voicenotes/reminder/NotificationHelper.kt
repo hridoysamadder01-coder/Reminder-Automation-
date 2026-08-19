@@ -1,5 +1,12 @@
 package app.pin.voicenotes.reminder
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * রিমাইন্ডার নোটিফিকেশন: high-importance চ্যানেল, সাউন্ড + ভাইব্রেশন।
+ * নোটিফিকেশনে ট্যাপ করলে MainActivity-তে নোটের id পাঠানো হয় —
+ * ঠিক সেই নোটটাই খোলে, অ্যাপ বন্ধ/ব্যাকগ্রাউন্ড/খোলা যে অবস্থাতেই থাকুক।
+ */
+
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager

@@ -1,5 +1,14 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * কাঁচা কথা/লেখাকে শব্দে (token) ভাঙে, আর প্রতিটা শব্দের দুটো রূপ রাখে:
+ *  - surface  = ব্যবহারকারী যেভাবে লিখেছে/বলেছে (নোট বানাতে ব্যবহার হয়)
+ *  - canonical = Vocabulary দিয়ে normalized রূপ (বোঝার কাজে ব্যবহার হয়)
+ * "১০টায়" → "১০ টায়" আলাদা হয়, "noteটা" → "note টা", "10.30" → "10:30"।
+ * দুই লিস্টের দৈর্ঘ্য সবসময় সমান — তাই কোন শব্দ বাদ দিতে হবে তা index দিয়ে মেলে।
+ */
+
 /**
  * Tokenizes raw voice/typed input into parallel surface + canonical token
  * lists. Surface tokens preserve the user's script and casing (they are used

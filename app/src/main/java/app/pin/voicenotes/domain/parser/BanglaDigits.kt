@@ -1,5 +1,12 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * বাংলা সংখ্যা (০-৯) কে ইংরেজি ডিজিটে (0-9) বদলায় — শুধু পার্সিংয়ের জন্য।
+ * "১০টায়" বুঝতে হলে ভেতরে "10" লাগে, কিন্তু ব্যবহারকারীর নোটে
+ * তার নিজের লেখা হরফই অক্ষত থাকে।
+ */
+
 /**
  * Bengali numerals appear routinely in both spoken transcripts and typed text
  * (e.g. "কাল সকাল ১০টায়"). Parsing happens on ASCII digits; the user's

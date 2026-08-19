@@ -1,5 +1,13 @@
 package app.pin.voicenotes.data
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ডাটাবেস আর অ্যালার্মের মাঝের সমন্বয়কারী। নোট সেভ/এডিট/ডিলিট, পিন,
+ * রিমাইন্ডার সেট/বাতিল, Undo-র জন্য restore, সার্চ র‍্যাংকিং — সব এখানে।
+ * রিবুটের পর restoreReminders() ভবিষ্যতেরগুলো আবার বসায়, আর ফোন বন্ধ থাকা
+ * অবস্থায় পার হয়ে যাওয়াগুলো Missed মার্ক করে — দেরিতে কখনো বাজায় না।
+ */
+
 import app.pin.voicenotes.domain.parser.TextNormalizer
 import app.pin.voicenotes.domain.parser.TitleGenerator
 import kotlinx.coroutines.flow.Flow

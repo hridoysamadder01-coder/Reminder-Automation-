@@ -1,5 +1,14 @@
 package app.pin.voicenotes.speech
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ডিভাইসের নিজস্ব Android speech service দিয়ে ভয়েস→লেখা। ভাষা bn-BD চাওয়া হয়।
+ * অফলাইনে ফোনে on-device recognition থাকলে (Android 12+) সেটাই ব্যবহার হয়।
+ * অ্যাপ নিজে কোনো সার্ভারে অডিও পাঠায় না — যা যায় তা ডিভাইসের recognizer-এর
+ * নিজস্ব ব্যাপার। এরর হলে পরিষ্কার বার্তা, আর টাইপিং সবসময় চালু থাকে।
+ * level = মাইকের আসল শব্দমাত্রা (0..1) — UI-র waveform এটাতেই নাচে, ভুয়া নয়।
+ */
+
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager

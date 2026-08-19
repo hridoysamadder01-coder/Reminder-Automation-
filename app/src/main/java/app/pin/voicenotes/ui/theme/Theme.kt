@@ -1,5 +1,12 @@
 package app.pin.voicenotes.ui.theme
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * PIN-এর চেহারা: প্রায়-কালো গ্রাফাইট surface, উষ্ণ অফ-হোয়াইট লেখা,
+ * একটাই amber accent (#E8A33D)। ইচ্ছা করেই শুধু ডার্ক — দুর্বল লাইট থিম
+ * দিয়ে "সাপোর্ট করি" দাবি করার চেয়ে একটা নিখুঁত রূপই ভালো।
+ */
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme

@@ -1,5 +1,12 @@
 package app.pin.voicenotes
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * একটাই Activity (singleTask)। রিমাইন্ডার নোটিফিকেশনে ট্যাপ করলে
+ * intent-এ নোটের id আসে — অ্যাপ বন্ধ থাকলে onCreate-এ, চালু থাকলে
+ * onNewIntent-এ ধরা হয়; দুই পথেই একই নোট খোলে, নেভিগেশন স্ট্যাক জোড়া লাগে না।
+ */
+
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager

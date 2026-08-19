@@ -1,5 +1,13 @@
 package app.pin.voicenotes.data
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * একটা নোটের ডাটাবেস রূপ। উল্লেখযোগ্য কলাম:
+ *  - originalTranscript = ব্যবহারকারী আসলে যা বলেছিল (রেফারেন্সের জন্য থাকে)
+ *  - searchText = normalized রূপ, যাতে "sokal" লিখে খুঁজলেও "shokal" মেলে
+ *  - reminderStatus = SCHEDULED → FIRED / MISSED / CANCELLED
+ */
+
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey

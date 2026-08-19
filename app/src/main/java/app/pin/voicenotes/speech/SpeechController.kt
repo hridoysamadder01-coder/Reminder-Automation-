@@ -1,5 +1,11 @@
 package app.pin.voicenotes.speech
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * স্পিচের ইন্টারফেস — UI কখনো সরাসরি Android-এর SpeechRecognizer ছোঁয় না।
+ * ফলে টেস্টে নকল (fake) কন্ট্রোলার বসানো যায়, আর ভয়েসহীন ফোনেও অ্যাপ চলে।
+ */
+
 import kotlinx.coroutines.flow.StateFlow
 
 enum class SpeechErrorKind { NO_MATCH, PERMISSION, UNAVAILABLE, NETWORK, BUSY, OTHER }

@@ -1,5 +1,12 @@
 package app.pin.voicenotes.data
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ডাটাবেসের সব প্রশ্ন (query) এখানে। Flow ফেরত দেওয়া query-গুলো লাইভ —
+ * ডেটা বদলালে স্ক্রিন নিজে নিজে রিফ্রেশ হয়। search() একসাথে আসল লেখা
+ * আর normalized লেখা দুটোতেই খোঁজে।
+ */
+
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert

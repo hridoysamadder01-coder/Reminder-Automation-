@@ -1,5 +1,12 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * পার্সার যা যা বুঝতে পারে তার পূর্ণ তালিকা — এই সিলড টাইপের বাইরে কিছু নেই।
+ * NeedsTimeClarification আলাদা করে রাখা হয়েছে কারণ স্পেকের কঠিন নিয়ম:
+ * অস্পষ্ট সময়ে কখনো অনুমান নয়, জিজ্ঞেস করতে হবে।
+ */
+
 import java.time.LocalDate
 import java.time.LocalDateTime
 

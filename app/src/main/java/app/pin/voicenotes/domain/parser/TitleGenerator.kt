@@ -1,5 +1,11 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * নোটের লেখা থেকে ছোট্ট শিরোনাম বানায়: প্রথম বাক্য নেয় (দাঁড়ি "।"-ও চেনে),
+ * বেশি লম্বা হলে শব্দের মাঝে না কেটে সীমানায় কেটে "…" দেয়। কোনো AI নেই।
+ */
+
 /**
  * Local, rule-based title from note content: first sentence/clause, cleanly
  * truncated at a word boundary. No model involved; the user can edit later.

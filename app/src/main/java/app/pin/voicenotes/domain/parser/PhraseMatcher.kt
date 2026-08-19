@@ -1,5 +1,13 @@
 package app.pin.voicenotes.domain.parser
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * ছোট্ট phrase-খোঁজার যন্ত্র। একটা phrase = পরপর কয়েকটা slot,
+ * প্রতিটা slot-এ কয়েকটা গ্রহণযোগ্য শব্দ (কিছু slot optional)।
+ * যেমন: [likhe][rakh] বা [mone][koriye][dis/dio/de]।
+ * ইচ্ছা করেই সরল রাখা হয়েছে — যাতে যে কেউ পড়ে বুঝতে পারে কী মিলবে, কী মিলবে না।
+ */
+
 /**
  * Tiny contiguous phrase matcher over canonical tokens.
  * A phrase is an ordered list of slots; each slot accepts a set of canonical

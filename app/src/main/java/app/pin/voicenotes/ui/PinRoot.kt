@@ -1,5 +1,14 @@
 package app.pin.voicenotes.ui
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * অ্যাপের কঙ্কাল: ৩টা ট্যাব (Home/Notes/Reminders) + মাঝখানে একটাই বড়
+ * মাইক বাটন — সব স্ক্রিনে একই capture ব্যবস্থা, ছড়ানো-ছিটানো বাটন নেই।
+ * মাইক চাপলে আগে RECORD_AUDIO পারমিশন দেখা হয়; deny করলে টাইপিং মোড খোলে।
+ * নোটিফিকেশন ট্যাপ → এখান থেকেই সরাসরি সেই নোটের পাতায় নেভিগেট হয়।
+ * Snackbar-এর Undo সহ সব ইভেন্ট এই এক জায়গায় জড়ো হয়।
+ */
+
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build

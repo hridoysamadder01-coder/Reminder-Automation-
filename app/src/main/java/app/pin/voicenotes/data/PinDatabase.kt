@@ -1,5 +1,12 @@
 package app.pin.voicenotes.data
 
+/*
+ * ── বাংলা ব্যাখ্যা ──────────────────────────────────────────────
+ * Room ডাটাবেস (schema v1)। destructive migration ইচ্ছা করেই নেই —
+ * ভবিষ্যতে স্কিমা বদলালে ডেটা রেখে migration লিখতে হবে, মুছে ফেলা চলবে না।
+ * নোট হারানো মানে এই অ্যাপের মূল প্রতিশ্রুতিই ভাঙা।
+ */
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
