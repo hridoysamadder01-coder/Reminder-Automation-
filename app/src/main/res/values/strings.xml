@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Identity (single source; rename here only) -->
+    <string name="app_name">PIN</string>
+    <string name="app_subtitle">Voice Notes &amp; Reminders</string>
+    <string name="version_line">V1 · Everything stays on this phone.</string>
+
+    <!-- Notification channel -->
+    <string name="channel_reminders">Reminders</string>
+    <string name="channel_reminders_desc">Reminders you asked PIN to keep</string>
+
+    <!-- Tabs -->
+    <string name="tab_home">Home</string>
+    <string name="tab_notes">Notes</string>
+    <string name="tab_reminders">Reminders</string>
+
+    <!-- Home -->
+    <string name="home_prompt">Say something\nyou don\'t want to forget.</string>
+    <string name="up_next">Up next</string>
+    <string name="recent">Recent</string>
+    <string name="pinned">Pinned</string>
+    <string name="view_all">View all</string>
+    <string name="about">About PIN</string>
+    <string name="empty_title">Nothing to remember yet.</string>
+    <string name="empty_subtitle">Tap the mic and say it.</string>
+
+    <!-- Capture -->
+    <string name="start_voice">Speak a note or reminder</string>
+    <string name="listening">Listening</string>
+    <string name="listening_hint">Speak naturally — Bangla, Banglish or English</string>
+    <string name="done_listening">Done speaking</string>
+    <string name="understanding">Understanding…</string>
+    <string name="type_instead">Type instead</string>
+    <string name="text_placeholder">kal 10 tay dada re call dite hobe mone korais</string>
+    <string name="heard">Heard</string>
+    <string name="note_label">Note</string>
+    <string name="reminder_label">Reminder</string>
+    <string name="reminder_placeholder">Reminder</string>
+    <string name="change_time">Change time</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="cancel">Cancel</string>
+    <string name="undo">Undo</string>
+    <string name="try_again">Try again</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="done">Done</string>
+    <string name="pick_time">Pick a time</string>
+
+    <!-- Clarification: never guess an ambiguous time -->
+    <string name="clarify_when">When should PIN remind you?</string>
+    <string name="clarify_period">%1$s — what time?</string>
+    <string name="clarify_past">That time already passed. When should PIN remind you?</string>
+    <string name="choose_time">Choose…</string>
+    <string name="save_without_reminder">Save without reminder</string>
+    <string name="period_morning">Tomorrow morning</string>
+    <string name="period_noon">Around noon</string>
+    <string name="period_afternoon">In the afternoon</string>
+    <string name="period_evening">In the evening</string>
+    <string name="period_night">At night</string>
+
+    <!-- Results / errors (plain language, no codes) -->
+    <string name="note_saved">Saved.</string>
+    <string name="saved_without_reminder">Saved as a note — no reminder was scheduled.</string>
+    <string name="reminder_set_for">Reminder set · %1$s</string>
+    <string name="note_pinned">📌 Pinned “%1$s”</string>
+    <string name="note_unpinned">Unpinned “%1$s”</string>
+    <string name="note_deleted">Note deleted.</string>
+    <string name="did_not_understand">Didn\'t catch a clear action. Saved words become notes — try “likhe rakh” or “mone korais”.</string>
+    <string name="no_note_match">I couldn\'t find that note. Try a word from the note.</string>
+    <string name="which_note">Which note?</string>
+    <string name="which_note_pin">Which note should be pinned?</string>
+    <string name="which_note_unpin">Which note should be unpinned?</string>
+    <string name="which_note_delete">Which note should be deleted?</string>
+    <string name="delete_question">Delete this note?</string>
+    <string name="delete">Delete</string>
+
+    <string name="mic_denied">Microphone access is off. You can keep typing.</string>
+    <string name="speech_unavailable">Voice isn\'t available on this phone right now. Type your note instead.</string>
+    <string name="speech_no_match">Didn\'t catch that. Try again, or type it.</string>
+    <string name="speech_network">Voice needs internet on this phone right now. Notes and reminders still work — type instead.</string>
+    <string name="speech_busy">The microphone is busy. Try again in a moment.</string>
+    <string name="speech_generic_error">Voice hiccuped. Try again, or type it.</string>
+
+    <string name="notifications_off_warning">Notifications are off, so this reminder can\'t alert you. Allow notifications for PIN in Settings.</string>
+    <string name="exact_alarm_off_hint">Exact reminders are off — delivery may be a few minutes late. You can allow them in system settings.</string>
+
+    <!-- Notes screen -->
+    <string name="notes_title">Notes</string>
+    <string name="search_placeholder">Search notes…</string>
+    <string name="filter_all">All</string>
+    <string name="filter_pinned">Pinned</string>
+    <string name="filter_reminders">Reminders</string>
+    <string name="filter_today">Today</string>
+    <string name="notes_empty_title">No notes yet.</string>
+    <string name="notes_empty_subtitle">Say it or type it — it lands here.</string>
+    <string name="search_empty_title">No matches.</string>
+    <string name="search_empty_subtitle">Try a shorter word from the note.</string>
+
+    <!-- Reminders screen -->
+    <string name="reminders_title">Reminders</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="earlier">Earlier</string>
+    <string name="status_done">Done</string>
+    <string name="status_missed">Missed</string>
+    <string name="status_off">Off</string>
+    <string name="reminders_empty_title">No reminders scheduled.</string>
+    <string name="reminders_empty_subtitle">Ask PIN to remind you about anything.</string>
+
+    <!-- Detail -->
+    <string name="created_at">Created %1$s</string>
+    <string name="add_reminder">Add reminder</string>
+    <string name="remove">Remove</string>
+    <string name="title_label">Title</string>
+    <string name="body_label">Note</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+
+    <!-- Settings / diagnostics -->
+    <string name="privacy_statement">Your notes and reminders are stored on this device. Nothing is uploaded by PIN. Voice recognition uses your device\'s available Android speech service — on some phones that service may use the internet.</string>
+    <string name="status_voice">Voice recognition</string>
+    <string name="status_on_device">On-device recognition</string>
+    <string name="status_notifications">Notifications</string>
+    <string name="status_exact">Exact reminder access</string>
+    <string name="available">Available</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="not_available">Not available</string>
+    <string name="allowed">Allowed</string>
+    <string name="not_allowed">Not allowed</string>
+    <string name="limited">Limited</string>
+    <string name="allow_exact_reminders">Allow exact reminders</string>
+</resources>
